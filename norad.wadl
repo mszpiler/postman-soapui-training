@@ -1,0 +1,205 @@
+<application xmlns="http://wadl.dev.java.net/2009/02">
+    <doc xml:lang="en" title="Pokakota API">Pokakota API documentation</doc>
+    <resources base="http://localhost:8600/norad">
+        <resource path="accounts" id="/accounts">
+            <doc xml:lang="en" title="/accounts"/>
+            <method name="POST" id="createUsingPOST">
+                <doc xml:lang="en" title="createUsingPOST">Creates new foobar.
+                    Creates foobar
+                </doc>
+                <request>
+                    <representation mediaType="application/json"/>
+                </request>
+                <response status="201">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="401">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="403">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="404">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="409">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="">
+                    <representation mediaType="application/json"/>
+                </response>
+                <response status="400 500">
+                    <representation mediaType="application/json;charset=UTF-8" element="acc:Fault"
+                                    xmlns:acc="http://localhost/norad/accounts"/>
+                </response>
+                <response status="200">
+                    <representation mediaType="application/json;charset=UTF-8" element="acc:Response"
+                                    xmlns:acc="http://localhost/norad/accounts"/>
+                </response>
+                <response status="0">
+                    <representation mediaType="" element="data"/>
+                    <representation mediaType="" element="data"/>
+                    <representation mediaType="" element="data"/>
+                </response>
+            </method>
+        </resource>
+        <resource path="accounts/{uuid}" id="/accounts/{uuid}">
+            <doc xml:lang="en" title="/accounts/{uuid}"/>
+            <method name="GET" id="getUserUsingGET">
+                <doc xml:lang="en" title="getUserUsingGET">Gets user by uuid
+                    Get user by uuid
+                </doc>
+                <request>
+                    <param name="uuid" type="xs:string" required="true" default="" style="template"
+                           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                        <doc xml:lang="en" title="uuid Parameter">uuid</doc>
+                    </param>
+                </request>
+                <response status="200">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="401">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="403">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="404">
+                    <representation mediaType="*/*"/>
+                </response>
+            </method>
+        </resource>
+        <resource path="animals" id="/animals">
+            <doc xml:lang="en" title="/animals"/>
+            <method name="POST" id="createUsingPOST_1">
+                <doc xml:lang="en" title="createUsingPOST_1">Creates new animal.
+                    Creates animal
+                </doc>
+                <request>
+                    <representation mediaType="application/json"/>
+                </request>
+                <response status="201">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="401">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="403">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="404">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="409">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="">
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+        </resource>
+        <resource path="animals/{uuid}" id="/animals/{uuid}">
+            <doc xml:lang="en" title="/animals/{uuid}"/>
+            <method name="GET" id="getAnimalUsingGET">
+                <doc xml:lang="en" title="getAnimalUsingGET">Gets animal by uuid
+                    Get animal by uuid
+                </doc>
+                <request>
+                    <param name="uuid" type="xs:string" required="true" default="" style="template"
+                           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                        <doc xml:lang="en" title="uuid Parameter">uuid</doc>
+                    </param>
+                </request>
+                <response status="200">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="401">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="403">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="404">
+                    <representation mediaType="*/*"/>
+                </response>
+            </method>
+        </resource>
+        <resource path="dictionaries/races" id="/dictionaries/races">
+            <doc xml:lang="en" title="/dictionaries/races"/>
+            <method name="GET" id="getRacesUsingGET">
+                <doc xml:lang="en" title="getRacesUsingGET">Gets all races
+                    Get all races
+                </doc>
+                <request/>
+                <response status="200">
+                    <representation mediaType="*/*"/>
+                    <representation mediaType="application/json;charset=UTF-8" element="Response"/>
+                </response>
+                <response status="401">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="403">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="404">
+                    <representation mediaType="*/*"/>
+                </response>
+            </method>
+        </resource>
+        <resource path="foobar" id="/foobar">
+            <doc xml:lang="en" title="/foobar"/>
+            <method name="POST" id="createUsingPOST_2">
+                <doc xml:lang="en" title="createUsingPOST_2">Creates new foobar.
+                    Creates foobar
+                </doc>
+                <request>
+                    <representation mediaType="application/json"/>
+                </request>
+                <response status="201">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="401">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="403">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="404">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="409">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="">
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+        </resource>
+        <resource path="foobar/{uuid}" id="/foobar/{uuid}">
+            <doc xml:lang="en" title="/foobar/{uuid}"/>
+            <method name="GET" id="getFoobarUsingGET">
+                <doc xml:lang="en" title="getFoobarUsingGET">Gets all foobars for logged user.
+                    Get all foobars for logged user.
+                </doc>
+                <request>
+                    <param name="uuid" type="xs:string" required="true" default="" style="template"
+                           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                        <doc xml:lang="en" title="uuid Parameter">uuid</doc>
+                    </param>
+                </request>
+                <response status="200">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="401">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="403">
+                    <representation mediaType="*/*"/>
+                </response>
+                <response status="404">
+                    <representation mediaType="*/*"/>
+                </response>
+            </method>
+        </resource>
+    </resources>
+</application>

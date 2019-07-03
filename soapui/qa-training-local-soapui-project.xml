@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="54faa8bd-3547-4f1b-858b-6f2018a2ec61" activeEnvironment="Default" name="qa-training-local" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings/>
+  <con:interface xsi:type="con:RestService" id="47a87fb8-7f3a-49f6-99a9-f0fc551f809d" wadlVersion="http://wadl.dev.java.net/2009/02" name="Norad API" type="rest" basePath="/norad" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:description>Norad API documentation</con:description>
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints>
+      <con:endpoint>http://localhost:8600</con:endpoint>
+    </con:endpoints>
+    <con:resource name="/accounts" path="/accounts" id="1cb9c1b9-c32e-4c3a-873b-378d231a4fdf">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="registerUsingPOST" id="57fc49ef-8919-4a0f-9b8a-ffb239a2bb3c" method="POST">
+        <con:description>Registers new user.
+Register new user</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>201</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>409</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:acc="http://localhost/norad/accounts">acc:Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400</con:status>
+          <con:params/>
+          <con:element xmlns:acc="http://localhost/norad/accounts">acc:Fault</con:element>
+        </con:representation>
+        <con:request name="Request 1" id="8f6bbd6d-91e9-46ce-a12b-3d09b5d05596" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="/accounts/{uuid}" path="/accounts/{uuid}" id="b95018fa-0323-4287-83ee-a7d1bc939c7c">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="getUserUsingGET" id="4a2b905f-1c5e-4413-9229-bdb53ab0324f" method="GET">
+        <con:description>Gets user by uuid
+Get user by uuid</con:description>
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>uuid</con:name>
+            <con:style>TEMPLATE</con:style>
+            <con:description>uuid</con:description>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>500</con:status>
+          <con:params/>
+          <con:element xmlns:acc="http://localhost/norad/accounts/">acc:Fault</con:element>
+        </con:representation>
+        <con:request name="Request 1" id="c7916ebf-65a5-4583-98be-1d68a678eea7" mediaType="application/json">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:request/>
+          <con:originalUri>http://localhost/norad/accounts/</con:originalUri>
+          <con:credentials>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="/animals" path="/animals" id="8ab5dd4d-7223-4fd1-9a71-e55a8fdbff39">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="createUsingPOST" id="fabbbb92-ab71-4b73-9208-2263666b6523" method="POST">
+        <con:description>Creates new animal.
+Creates animal</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>201</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>409</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:request name="Request 1" id="59f38633-0d2e-4eb2-ad2b-0db15ca69269" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="/animals/{animalUUID}/images/{imageUUID}" path="/animals/{animalUUID}/images/{imageUUID}" id="bbc13787-e934-4aa7-8597-ceb13545a6d3">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="downloadImageUsingGET" id="dec7dae3-2fe7-4806-98a2-5064b9aaf607" method="GET">
+        <con:description>downloadImage</con:description>
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>animalUUID</con:name>
+            <con:style>TEMPLATE</con:style>
+            <con:description>Animal UUID</con:description>
+          </con:parameter>
+          <con:parameter>
+            <con:name>imageUUID</con:name>
+            <con:style>TEMPLATE</con:style>
+            <con:description>Image UUID</con:description>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:request name="Request 1" id="ee0aad84-6a99-4235-8788-fc172593e6ed" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+      <con:method name="uploadImageUsingPOST" id="18a3502c-a14a-4aaf-932f-3614bc48756a" method="POST">
+        <con:description>uploadImage</con:description>
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>animalUUID</con:name>
+            <con:style>TEMPLATE</con:style>
+            <con:description>Animal UUID</con:description>
+          </con:parameter>
+          <con:parameter>
+            <con:name>file</con:name>
+            <con:style>QUERY</con:style>
+            <con:description>Binary content of the animal picture</con:description>
+          </con:parameter>
+          <con:parameter>
+            <con:name>imageUUID</con:name>
+            <con:style>TEMPLATE</con:style>
+            <con:description>Image UUID</con:description>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>201</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>multipart/form-data</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:request name="Request 1" id="abfa88f7-d861-42ad-a2bd-759c0b8d0e12" mediaType="multipart/form-data">
+          <con:settings/>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="/animals/{uuid}" path="/animals/{uuid}" id="040823a4-43ca-4e33-9731-66d30f635c37">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="getAnimalUsingGET" id="222f85c2-b727-4b1c-9402-8a97fa52a6cd" method="GET">
+        <con:description>Gets animal by uuid
+Get animal by uuid</con:description>
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>uuid</con:name>
+            <con:style>TEMPLATE</con:style>
+            <con:description>animal UUID</con:description>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:request name="Request 1" id="7a4a5a89-c4bf-4895-bfb8-6123ebfa9dc0" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+      <con:method name="updateStatusUsingPUT" id="44273c87-ed4e-4cc9-b362-cc855d07e1ca" method="PUT">
+        <con:description>Gets animal by uuid
+Get animal by uuid</con:description>
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>uuid</con:name>
+            <con:style>TEMPLATE</con:style>
+            <con:description>animal UUID</con:description>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>201</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:request name="Request 1" id="a0c94efd-990a-4722-a19f-1ce32646b881" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="/dictionaries/races" path="/dictionaries/races" id="fbc25db0-6161-43ac-835e-f3d6fd336822">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="getRacesUsingGET" id="a1cecabd-7750-4c76-8780-43fdada2176c" method="GET">
+        <con:description>Gets all races
+Get all races</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>403</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>*/*</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:request name="Request 1" id="c0fa3bd1-76a7-4aa6-96da-b59602723c95" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://localhost:8600</con:endpoint>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:testSuite id="686ce353-39fe-4f4f-85c2-5e0a0cc0b162" name="Norad Test Suite">
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="c15e7083-9b47-468c-a530-5bb517d8b6f6" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Exercise 4 – Get all races" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get all races" id="0f15917f-c56d-4670-a0d5-a9d30ebf98f3">
+        <con:settings/>
+        <con:config service="Norad API" resourcePath="/norad/dictionaries/races" methodName="getRacesUsingGET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get all races" id="c0fa3bd1-76a7-4aa6-96da-b59602723c95" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8600</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost/norad/dictionaries/races</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="eb86acde-c227-436e-8fb4-c76b08025e00" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="JsonPath Count" id="3886b0ac-e46a-4d9c-a4e8-4aeb35e78421" name="JsonPath Count">
+              <con:configuration>
+                <path>$</path>
+                <content>10</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+                <ignoreComments>false</ignoreComments>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase id="b6bdecbd-38a4-4372-89d8-ad178d883cfa" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Exercise 5 – Register new user" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="groovy" name="Generate unique email" id="48433527-19f0-4855-9835-1393d8b0e3cc">
+        <con:settings/>
+        <con:config>
+          <script>import org.apache.commons.lang.RandomStringUtils
+
+String charset = (('A'..'Z') + ('0'..'9')).join()
+Integer length = 9
+String randomString = RandomStringUtils.random(length, charset.toCharArray())
+String value = "mszpiler+" + randomString + "@norad.com"
+
+testRunner.testCase.setPropertyValue("email", value)
+
+log.info value</script>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Register user" id="536648c1-c6b6-4161-90c7-626cc1e33e7b">
+        <con:settings/>
+        <con:config service="Norad API" resourcePath="/norad/accounts" methodName="registerUsingPOST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Register user" id="8f6bbd6d-91e9-46ce-a12b-3d09b5d05596" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8600</con:endpoint>
+            <con:request>{
+  "email": "${#TestCase#email}",
+  "password": "password"
+}</con:request>
+            <con:originalUri>http://localhost/norad/accounts</con:originalUri>
+            <con:assertion type="JsonPath Match" id="ba7ef56d-9ef1-4d29-b8ec-6503b4545a1d" name="JsonPath Match">
+              <con:configuration>
+                <path>$.email</path>
+                <content>${#TestCase#email}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+                <ignoreComments>false</ignoreComments>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties>
+        <con:property>
+          <con:name>email</con:name>
+          <con:value>mszpiler+SRF8M6XUZ@norad.com</con:value>
+        </con:property>
+      </con:properties>
+    </con:testCase>
+    <con:testCase id="72cfe231-7ba0-4f77-af16-5b37d2815067" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Exercise 6 - Add new animal to new user" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="calltestcase" name="Run TestCase Register new user" id="9df9798a-388c-4272-9a2f-0200c6c6e427">
+        <con:settings/>
+        <con:config xsi:type="con:RunTestCaseStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:targetTestCase>b6bdecbd-38a4-4372-89d8-ad178d883cfa</con:targetTestCase>
+          <con:properties>
+            <con:property>
+              <con:name>email</con:name>
+            </con:property>
+          </con:properties>
+          <con:returnProperties/>
+          <con:runMode>PARALLELL</con:runMode>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="groovy" name="Generate random animal name" id="f3629324-aa61-4ea2-9e82-942b8985603e">
+        <con:settings/>
+        <con:config>
+          <script>import org.apache.commons.lang.RandomStringUtils
+
+String charset = (('A'..'Z') + ('0'..'9')).join()
+Integer length = 9
+String randomString = RandomStringUtils.random(length, charset.toCharArray())
+String value = "mszpiler+animal+" + randomString
+testRunner.testCase.setPropertyValue("animalName", value)
+log.info value</script>
+        </con:config>
+      </con:testStep>
+      <con:properties>
+        <con:property>
+          <con:name>animalName</con:name>
+          <con:value>mszpiler+animal+VA0IE99MX</con:value>
+        </con:property>
+      </con:properties>
+    </con:testCase>
+    <con:properties/>
+  </con:testSuite>
+  <con:properties/>
+  <con:wssContainer/>
+  <con:oAuth2ProfileContainer/>
+  <con:oAuth1ProfileContainer/>
+  <con:sensitiveInformation/>
+</con:soapui-project>
