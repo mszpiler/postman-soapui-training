@@ -157,6 +157,18 @@ Creates animal</con:description>
           <con:mediaType>application/json</con:mediaType>
           <con:params/>
         </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>500</con:status>
+          <con:params/>
+          <con:element xmlns:anim="http://localhost/norad/animals">anim:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:anim="http://localhost/norad/animals">anim:Response</con:element>
+        </con:representation>
         <con:request name="Request 1" id="59f38633-0d2e-4eb2-ad2b-0db15ca69269" mediaType="application/json">
           <con:settings/>
           <con:endpoint>http://localhost:8600</con:endpoint>
@@ -472,6 +484,36 @@ log.info value</script>
                 <ignoreComments>false</ignoreComments>
               </con:configuration>
             </con:assertion>
+            <con:assertion type="GroovyScriptAssertion" id="a4d612e3-c196-4f0a-bf43-acb9fba75008" name="Database veryfication">
+              <con:configuration>
+                <scriptText>import groovy.sql.Sql
+
+import java.sql.Driver
+
+def driver = Class.forName('org.postgresql.Driver').newInstance() as Driver
+
+def props = new Properties()
+props.setProperty("user", "pkko")
+props.setProperty("password", "pkko")
+
+def conn = driver.connect("jdbc:postgresql://localhost:8200/pkko_db", props)
+def sql = new Sql(conn)
+def testCase = messageExchange.modelItem.testCase
+def email = testCase.getPropertyValue("email")
+log.info "Email=" + email
+try {
+    def row = sql.firstRow('select * from norad.users where email = :email', [email: email])
+    assert row.email == email
+} catch (Exception e) {
+    log.info(e.getMessage())
+    assert false
+}
+finally {
+    sql.close()
+    conn.close()
+}</scriptText>
+              </con:configuration>
+            </con:assertion>
             <con:credentials>
               <con:authType>No Authorization</con:authType>
             </con:credentials>
@@ -481,10 +523,20 @@ log.info value</script>
           </con:restRequest>
         </con:config>
       </con:testStep>
+      <con:testStep type="groovy" name="Save user uuid in properties" id="d3903bc5-ef69-4080-9e2f-7578d36b4620">
+        <con:settings/>
+        <con:config>
+          <script>import groovy.json.JsonSlurper
+def res = context.expand('${Register user#response}')
+slurperresponse = new JsonSlurper().parseText(res)
+log.info "userUUID="+slurperresponse.uuid
+testRunner.testCase.testSuite.setPropertyValue("userUUID", slurperresponse.uuid)</script>
+        </con:config>
+      </con:testStep>
       <con:properties>
         <con:property>
           <con:name>email</con:name>
-          <con:value>mszpiler+SRF8M6XUZ@norad.com</con:value>
+          <con:value>mszpiler+QWIPR6JUJ@norad.com</con:value>
         </con:property>
       </con:properties>
     </con:testCase>
@@ -516,14 +568,214 @@ testRunner.testCase.setPropertyValue("animalName", value)
 log.info value</script>
         </con:config>
       </con:testStep>
+      <con:testStep type="restrequest" name="Get races" id="a8084431-ab3c-4715-a428-328645045449">
+        <con:settings/>
+        <con:config service="Norad API" resourcePath="/norad/dictionaries/races" methodName="getRacesUsingGET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Ger races" id="c0fa3bd1-76a7-4aa6-96da-b59602723c95" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8600</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost/norad/dictionaries/races</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="groovy" name="Fetch random race" id="4bf12cac-96d0-4332-b153-ba9aed576725">
+        <con:settings/>
+        <con:config>
+          <script>import groovy.json.JsonSlurper
+def res = context.expand('${Get races#response}')
+slurperresponse = new JsonSlurper().parseText(res)
+Random random = new Random()
+def randomIndex = random.nextInt(10)
+log.info "raceId="+slurperresponse[randomIndex].id
+testRunner.testCase.setPropertyValue("raceId", ""+slurperresponse[randomIndex].id)</script>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Create new animal" id="0a1e67be-8de4-430a-a814-56482fc656f6">
+        <con:settings/>
+        <con:config service="Norad API" resourcePath="/norad/animals" methodName="createUsingPOST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Create new animal" id="59f38633-0d2e-4eb2-ad2b-0db15ca69269" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8600</con:endpoint>
+            <con:request>{
+	"name" : "${#TestCase#animalName}",
+	"species" : "CAT",
+	"raceId" : "${#TestCase#raceId}",
+	"userUUID" : "${#TestSuite#userUUID}",
+	"chipId" : "111",
+	"images" : 
+	[
+		{
+			"captureTimestamp": "2019-06-07T12:45:57",
+			"originalFilename":"originalFilename1",
+			"mimeType" : "images/jpg"		
+		},
+		{
+			"captureTimestamp": "2019-06-07T12:45:57",
+			"originalFilename":"originalFilename2",
+			"mimeType" : "images/jpg"		
+		},
+		{
+			"captureTimestamp": "2019-06-07T12:45:57",
+			"originalFilename":"originalFilename3",
+			"mimeType" : "images/jpg"		
+		}		
+	]
+}</con:request>
+            <con:originalUri>http://localhost/norad/animals</con:originalUri>
+            <con:assertion type="GroovyScriptAssertion" id="1f1b84fa-23a3-4fda-ae74-73765cd4b3a4" name="Assert A - expected race">
+              <con:configuration>
+                <scriptText>import groovy.sql.Sql
+import groovy.json.JsonSlurper
+import java.sql.Driver
+
+def driver = Class.forName('org.postgresql.Driver').newInstance() as Driver
+
+def props = new Properties()
+props.setProperty("user", "pkko")
+props.setProperty("password", "pkko")
+def conn = driver.connect("jdbc:postgresql://localhost:8200/pkko_db", props)
+def sql = new Sql(conn)
+
+def testCase = messageExchange.modelItem.testCase
+ 
+def raceId = testCase.getPropertyValue("raceId")
+
+def res = context.expand('${Create new animal#response}')
+slurperresponse = new JsonSlurper().parseText(res)
+def animalUUID = UUID.fromString(slurperresponse.uuid)
+
+log.info "animalUUID=" + animalUUID + " raceId="+raceId
+
+try {
+    def row = sql.firstRow('select * from norad.animals where uuid = :uuid', [uuid: animalUUID])
+    log.info "row.race_id="+row.race_id
+    assert row.race_id == raceId.toInteger()
+} catch (Exception e) {
+    log.info(e.getMessage())
+    assert false
+}
+finally {
+    sql.close()
+    conn.close()
+}</scriptText>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="GroovyScriptAssertion" id="142c9528-c00a-4e2a-9b8d-7662b408e5dd" name="Assert B - expected user">
+              <con:configuration>
+                <scriptText>import groovy.json.JsonSlurper
+import groovy.sql.Sql
+
+import java.sql.Driver
+
+def driver = Class.forName('org.postgresql.Driver').newInstance() as Driver
+
+def props = new Properties()
+props.setProperty("user", "pkko")
+props.setProperty("password", "pkko")
+def conn = driver.connect("jdbc:postgresql://localhost:8200/pkko_db", props)
+def sql = new Sql(conn)
+
+def testCase = messageExchange.modelItem.testCase
+
+def tcUserUUID = testCase.testSuite.getPropertyValue("userUUID")
+def userUUID = UUID.fromString(tcUserUUID)
+log.info "userUUID="+userUUID
+
+def res = context.expand('${Create new animal#response}')
+slurperresponse = new JsonSlurper().parseText(res)
+
+def animalUUID = UUID.fromString(slurperresponse.uuid)
+log.info "animalUUID=" + animalUUID
+
+try {
+    def animalRow = sql.firstRow('select * from norad.animals where uuid = :uuid', [uuid: animalUUID])
+    def userRow = sql.firstRow('select * from norad.users where uuid = :uuid', [uuid: userUUID])
+    
+    assert animalRow.user_id == userRow.id
+    
+} catch (Exception e) {
+    log.info(e.getMessage())
+    assert false
+}
+finally {
+    sql.close()
+    conn.close()
+}</scriptText>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="JsonPath Count" id="c0480e06-7f6c-42ae-99b5-8047019b7f3f" name="Assert C - expected image count">
+              <con:configuration>
+                <path>$.images</path>
+                <content>3</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+                <ignoreComments>false</ignoreComments>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="GroovyScriptAssertion" id="85809f89-698c-42e3-adbd-298b6070e3e3" name="Assert D - uuids exist in images">
+              <con:configuration>
+                <scriptText>import groovy.json.JsonSlurper
+
+def res = context.expand('${Create new animal#response}')
+slurperresponse = new JsonSlurper().parseText(res)
+
+for (i =0; i &lt; slurperresponse.images.size(); i++) {
+	log.info slurperresponse.images[i].uuid
+	assert slurperresponse.images[i].uuid != null
+}</scriptText>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="groovy" name="Save animal UUID in properties" id="b9801576-4843-45ff-830c-c98b18bb7bbe">
+        <con:settings/>
+        <con:config>
+          <script>import groovy.json.JsonSlurper
+def res = context.expand('${Create new animal#response}')
+slurperresponse = new JsonSlurper().parseText(res)
+log.info "animalUUID="+slurperresponse.uuid
+testRunner.testCase.testSuite.setPropertyValue("animalUUID", ""+slurperresponse.uuid)</script>
+        </con:config>
+      </con:testStep>
       <con:properties>
         <con:property>
           <con:name>animalName</con:name>
-          <con:value>mszpiler+animal+VA0IE99MX</con:value>
+          <con:value>mszpiler+animal+ZERF9Y8AI</con:value>
+        </con:property>
+        <con:property>
+          <con:name>raceId</con:name>
+          <con:value>6</con:value>
         </con:property>
       </con:properties>
     </con:testCase>
-    <con:properties/>
+    <con:properties>
+      <con:property>
+        <con:name>userUUID</con:name>
+        <con:value>b1e6d83d-54dc-4431-ab8b-2979ddd785d3</con:value>
+      </con:property>
+      <con:property>
+        <con:name>animalUUID</con:name>
+        <con:value>92b21dcb-8a37-47d1-8b96-9cf654b1b95d</con:value>
+      </con:property>
+    </con:properties>
   </con:testSuite>
   <con:properties/>
   <con:wssContainer/>

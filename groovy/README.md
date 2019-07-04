@@ -10,6 +10,9 @@
 
 ##### Example-05. How to parse JSON string to Groovy data?
 
+##### Example-06. How to setup property in test suite context?
+`testRunner.testCase.testSuite.setPropertyValue("name", value)`
 
+##### Example-07. How to loop in Groovy?
 
 
