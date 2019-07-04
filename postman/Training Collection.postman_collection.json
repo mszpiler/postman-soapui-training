@@ -1,0 +1,437 @@
+{
+	"info": {
+		"_postman_id": "a5b39f09-7be8-4382-98c9-a64dc1220f29",
+		"name": "Training Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Exercise 4 - Get all races",
+			"item": [
+				{
+					"name": "Get all races",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "190388df-da18-4ddb-a5f1-ef5a3ec366c8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Size is equal to 10\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.eql(10);",
+									"});",
+									"",
+									"pm.test(\"Fifth position is Kot egzotyczny\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[4].name).to.eql(\"Kot egzotyczny\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/dictionaries/races",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"dictionaries",
+								"races"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exercise 5 - Register new user",
+			"item": [
+				{
+					"name": "Register new user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8b35928e-abad-4df6-a89b-2ff782cb8514",
+								"exec": [
+									"var randomString = Math.random().toString(36).substring(7);",
+									"",
+									"console.log(\"Random string is \" + randomString);",
+									"",
+									"var randomEmail = 'mszpiler+postman+'+randomString+'@norad.com';",
+									"",
+									"pm.environment.set(\"USER_EMAIL\", randomEmail);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "2f31251d-cfe1-443c-803f-71a3e1a7b25a",
+								"exec": [
+									"pm.test(\"Check if email the same\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"USER_EMAIL\"));",
+									"    ",
+									"    //required for point 5.C)",
+									"    pm.environment.set(\"USER_UUID\", jsonData.uuid);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{USER_EMAIL}}\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user and test if exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "23eeede9-2b77-48f5-ab88-4780ca2d3fbe",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts/{{USER_UUID}}",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"accounts",
+								"{{USER_UUID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exercise 6 - Add new animal for new user",
+			"item": [
+				{
+					"name": "Step 1 - Register new user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8b35928e-abad-4df6-a89b-2ff782cb8514",
+								"exec": [
+									"var randomString = Math.random().toString(36).substring(7);",
+									"",
+									"console.log(\"Random string is \" + randomString);",
+									"",
+									"var randomEmail = 'mszpiler+postman+'+randomString+'@norad.com';",
+									"",
+									"pm.environment.set(\"USER_EMAIL\", randomEmail);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "2f31251d-cfe1-443c-803f-71a3e1a7b25a",
+								"exec": [
+									"pm.test(\"Check if email the same\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"USER_EMAIL\"));",
+									"    //required for point 5.C)",
+									"    pm.environment.set(\"USER_UUID\", jsonData.uuid);",
+									"    pm.environment.set(\"USER_ID\", jsonData.id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{USER_EMAIL}}\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 2 - Get all races",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "190388df-da18-4ddb-a5f1-ef5a3ec366c8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Size is equal to 10\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.eql(10);",
+									"});",
+									"",
+									"pm.test(\"Fifth position is Kot egzotyczny\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[4].name).to.eql(\"Kot egzotyczny\");",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var randomNumber = Math.floor((Math.random() * 10) + 1);",
+									"var selectedRaceId =  jsonData[randomNumber].id",
+									"pm.environment.set(\"RACE_ID\", selectedRaceId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/dictionaries/races",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"dictionaries",
+								"races"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 3 - Create new animal",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "527571c4-c949-4da2-95a5-a1dfd75f563b",
+								"exec": [
+									"var randomString = Math.random().toString(36).substring(7);",
+									"",
+									"var randomAnimalName = 'mszpiler+postman+animal+'+randomString;",
+									"",
+									"pm.environment.set(\"ANIMAL_NAME\", randomAnimalName);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fd6d9de4-913d-4555-95d7-ff6ad83fb24f",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"ANIMAL_UUID\", jsonData.uuid);",
+									"",
+									"",
+									"pm.test(\"Should contain 3 images in response\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.images.length).to.eql(3);",
+									"});",
+									"",
+									"pm.test(\"Every image uuid should not be null\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    for (i = 0; i < jsonData.images.length; i++) {",
+									"        pm.expect(jsonData.images[i].uuid).not.eql(null);    ",
+									"    }",
+									"    ",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{ANIMAL_NAME}}\",\n  \"raceId\": {{RACE_ID}},\n  \"species\": \"CAT\",\n  \"userUUID\": \"{{USER_UUID}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"animals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 4 - Get animal details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e414395-9fd4-45aa-bb6f-5bfa10db9d35",
+								"exec": [
+									"pm.test(\"Check if races match\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var envRaceId = pm.environment.get(\"RACE_ID\"); ",
+									"    pm.expect(jsonData.raceId).to.eql(envRaceId);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals/{{ANIMAL_UUID}}",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"animals",
+								"{{ANIMAL_UUID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 5 - Get user details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a2ab6e27-d3aa-4e8d-bc29-8d0499358a1b",
+								"exec": [
+									"pm.test(\"Check if users match\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var envUserId = pm.environment.get(\"USER_ID\"); ",
+									"    pm.expect(jsonData.id).to.eql(envUserId);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts/{{USER_UUID}}",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"accounts",
+								"{{USER_UUID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
