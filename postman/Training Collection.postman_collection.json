@@ -320,6 +320,8 @@
 									"    ",
 									"});",
 									"",
+									"pm.environment.set(\"FIRST_IMAGE_UUID\", jsonData.images[0].uuid);",
+									"",
 									""
 								],
 								"type": "text/javascript"
@@ -338,7 +340,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{ANIMAL_NAME}}\",\n  \"raceId\": {{RACE_ID}},\n  \"species\": \"CAT\",\n  \"userUUID\": \"{{USER_UUID}}\"\n}"
+							"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{ANIMAL_NAME}}\",\n  \"raceId\": {{RACE_ID}},\n  \"species\": \"CAT\",\n  \"userUUID\": \"{{EX8_USER_UUID}}\"\n}"
 						},
 						"url": {
 							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals",
@@ -430,6 +432,198 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exercise 7 - Upload file",
+			"item": [
+				{
+					"name": "Upload file",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals/{{ANIMAL_UUID}}/images/{{FIRST_IMAGE_UUID}}",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"animals",
+								"{{ANIMAL_UUID}}",
+								"images",
+								"{{FIRST_IMAGE_UUID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b9227a9a-f06a-42ac-8aad-a2907b4f170d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals/{{ANIMAL_UUID}}/images/{{FIRST_IMAGE_UUID}}",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"animals",
+								"{{ANIMAL_UUID}}",
+								"images",
+								"{{FIRST_IMAGE_UUID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exercise 8 - Add many animals from CSV file",
+			"item": [
+				{
+					"name": "Register new user",
+					"item": [
+						{
+							"name": "Register new user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f5dab679-3197-444f-b033-245cd5183e7d",
+										"exec": [
+											"var randomString = Math.random().toString(36).substring(7);",
+											"console.log(\"Random string is \" + randomString);",
+											"var randomEmail = 'mszpiler+postman+' + randomString + '@norad.com';",
+											"pm.environment.set(\"USER_EMAIL\", randomEmail);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "7c9f97fd-9d41-464d-b70b-0f992d64459a",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"EX8_USER_UUID\", jsonData.uuid);",
+											"console.log(\"EX8_USER_UUID=\"+jsonData.uuid)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"password\"\n}"
+								},
+								"url": {
+									"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts",
+									"host": [
+										"{{API_HOST}}{{API_PORT}}"
+									],
+									"path": [
+										"norad",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Create many animals",
+					"item": [
+						{
+							"name": "Create new animal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9723d5b1-dcea-48e7-8c90-d2e760bc2399",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{name}}\",\n  \"raceId\": {{raceId}},\n  \"species\": \"CAT\",\n  \"userUUID\": \"{{EX8_USER_UUID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{API_HOST}}{{API_PORT}}/norad/animals",
+									"host": [
+										"{{API_HOST}}{{API_PORT}}"
+									],
+									"path": [
+										"norad",
+										"animals"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		}
