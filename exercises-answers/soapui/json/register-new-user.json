@@ -1,0 +1,4 @@
+{
+  "email": "${#TestCase#email}",
+  "password": "password"
+}

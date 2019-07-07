@@ -1,0 +1,14 @@
+{
+  "name": "${#TestCase#animalName}",
+  "species": "CAT",
+  "raceId": "${#TestCase#raceId}",
+  "userUUID": "${#TestSuite#userUUID}",
+  "chipId": "111",
+  "images": [
+    {
+      "captureTimestamp": "2019-06-07T12:45:57",
+      "originalFilename": "originalFilename",
+      "mimeType": "images/jpg"
+    }
+  ]
+}

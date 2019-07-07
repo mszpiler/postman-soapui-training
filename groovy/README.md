@@ -28,6 +28,9 @@ https://www.soapui.org/scripting-properties/tips-tricks.html
 ##### Example-11. How to get testCase object in assertion section?
 `def testCase = messageExchange.modelItem.testCase`
 
+##### Example-12. How to read file in Groovy?
+
+##### Example-13. How to iterating a Map?
 
 
 

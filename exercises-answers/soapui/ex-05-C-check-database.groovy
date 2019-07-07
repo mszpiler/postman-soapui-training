@@ -10,6 +10,7 @@ props.setProperty("password", "pkko")
 
 def conn = driver.connect("jdbc:postgresql://localhost:8200/pkko_db", props)
 def sql = new Sql(conn)
+
 def testCase = messageExchange.modelItem.testCase
 def email = testCase.getPropertyValue("email")
 log.info "Email=" + email

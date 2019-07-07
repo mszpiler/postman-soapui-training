@@ -15,3 +15,5 @@ pm.test("Every image uuid should not be null", function () {
     }
 
 });
+
+pm.environment.set("FIRST_IMAGE_UUID", jsonData.images[0].uuid);
