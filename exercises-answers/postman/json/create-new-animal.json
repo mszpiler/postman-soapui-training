@@ -1,0 +1,30 @@
+{
+  "name": "{{ANIMAL_NAME}}",
+  "raceId": {{RACE_ID}},
+  "species": "CAT",
+  "userUUID": "{{EX8_USER_UUID}}",
+  "chipId": 342323423,
+  "images": [
+    {
+      "captureTimestamp": 234827634827634,
+      "latitude": 12.323423423,
+      "longitude": 52.42342342,
+      "mimeType": "image/jpg",
+      "originalFilename": "image1.jpg"
+    },
+    {
+      "captureTimestamp": 234827634827634,
+      "latitude": 12.323423423,
+      "longitude": 52.42342342,
+      "mimeType": "image/jpg",
+      "originalFilename": "image2.jpg"
+    },
+    {
+      "captureTimestamp": 234827634827634,
+      "latitude": 12.323423423,
+      "longitude": 52.42342342,
+      "mimeType": "image/jpg",
+      "originalFilename": "image3.jpg"
+    }
+  ]
+}
