@@ -24,7 +24,6 @@
     }
   ],
   "name": "{{name}}",
-  "raceId": {{raceId}},
-  "species": "CAT",
-  "userUUID": "{{EX8_USER_UUID}}"
+  "raceId": "{{raceId}}",
+  "species": "CAT"
 }

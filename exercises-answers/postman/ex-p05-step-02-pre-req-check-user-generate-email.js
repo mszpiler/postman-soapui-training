@@ -1,8 +1,8 @@
-var exUserUUID = pm.environment.get("EX8_USER_UUID");
+var exUserUUID = pm.environment.get("EX5_USER_UUID");
 
 console.log("exUserUUID = " + exUserUUID);
 
-//first check if EX8_USER_UUID is set in environment
+//first check if EX5_USER_UUID is set in environment
 if (exUserUUID === null || exUserUUID === undefined) {
     var randomString = Math.random().toString(36).substring(7);
     console.log("Random string is " + randomString);

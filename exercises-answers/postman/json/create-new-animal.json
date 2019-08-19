@@ -1,8 +1,4 @@
 {
-  "name": "{{ANIMAL_NAME}}",
-  "raceId": {{RACE_ID}},
-  "species": "CAT",
-  "userUUID": "{{EX8_USER_UUID}}",
   "chipId": 342323423,
   "images": [
     {
@@ -26,5 +22,8 @@
       "mimeType": "image/jpg",
       "originalFilename": "image3.jpg"
     }
-  ]
+  ],
+  "name": "{{ANIMAL_NAME}}",
+  "raceId": "{{RACE_ID}}",
+  "species": "CAT"
 }

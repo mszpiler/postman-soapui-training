@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Exercise 4 - Get all races",
+			"name": "Exercise P_1 - Get all races",
 			"item": [
 				{
 					"name": "Get all races",
@@ -36,17 +36,14 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/dictionaries/races",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/dictionaries/races",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"dictionaries",
 								"races"
 							]
@@ -57,7 +54,7 @@
 			]
 		},
 		{
-			"name": "Exercise 5 - Register new user",
+			"name": "Exercise P_2 - Register new user",
 			"item": [
 				{
 					"name": "Register new user",
@@ -111,13 +108,117 @@
 							"raw": "{\n  \"email\": \"{{USER_EMAIL}}\",\n  \"password\": \"password\"\n}"
 						},
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Access Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c5bec55e-f953-45f9-81d1-000d0b6dec5b",
+								"exec": [
+									"let tokenUrl = pm.environment.get(\"API_HOST\") + pm.environment.get(\"API_PORT\") + pm.environment.get(\"AUTH_TOKEN_PATH\");",
+									"let clientId = pm.environment.get(\"AUTH_CLIENT_ID\");",
+									"let clientSecret = pm.environment.get(\"AUTH_SECRET\");",
+									"let scope = pm.environment.get(\"AUTH_SCOPE\");",
+									"let grantType = 'password';",
+									"let userName = pm.environment.get(\"USER_EMAIL\");",
+									"let password = 'password';",
+									"",
+									"console.log('tokenUrl: ' + tokenUrl);",
+									"",
+									"let getTokenRequest = {",
+									"    method: 'POST',",
+									"    header: {",
+									"        'Accept': 'application/json',",
+									"        'Content-Type': 'application/x-www-form-urlencoded'",
+									"    },",
+									"    url: tokenUrl,",
+									"    body: {",
+									"        mode: 'urlencoded',",
+									"        urlencoded: [",
+									"            { key: 'grant_type', value: grantType, disabled: false },",
+									"            { key: 'username', value: userName, disabled: false },",
+									"            { key: 'password', value: password, disabled: false },",
+									"            { key: 'scope', value: scope, disabled: false },",
+									"            { key: 'client_id', value: clientId, disabled: false },",
+									"            { key: 'client_secret', value: clientSecret, disabled: false }",
+									"        ]",
+									"    }",
+									"};",
+									"",
+									"pm.sendRequest(getTokenRequest, (err, response) => {",
+									"    let jsonResponse = response.json(),",
+									"        newAccessToken = jsonResponse.access_token;",
+									"",
+									"    console.log({ err, jsonResponse, newAccessToken })",
+									"",
+									"    pm.environment.set('ACCESS_TOKEN', newAccessToken);",
+									"});",
+									"",
+									"console.log('ACCESS_TOKEN: ' + pm.environment.get('ACCESS_TOKEN'));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "28af1a00-e349-4919-b349-77689b30d079",
+								"exec": [
+									"pm.test(\"Should have status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should contain UUID\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.uuid.length).to.above(0);",
+									"});",
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"USER_UUID\", jsonData['uuid']);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts/{{USER_UUID}}",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"api",
+								"accounts",
+								"{{USER_UUID}}"
 							]
 						}
 					},
@@ -141,20 +242,30 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts/{{USER_UUID}}",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts/{{USER_UUID}}",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"accounts",
 								"{{USER_UUID}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -163,7 +274,7 @@
 			]
 		},
 		{
-			"name": "Exercise 6 - Add new animal for new user",
+			"name": "Exercise P_3 - Add new animal for new user",
 			"item": [
 				{
 					"name": "Step 1 - Register new user",
@@ -194,7 +305,6 @@
 									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"USER_EMAIL\"));",
 									"    //required for point 5.C)",
 									"    pm.environment.set(\"USER_UUID\", jsonData.uuid);",
-									"    pm.environment.set(\"USER_ID\", jsonData.id);",
 									"});",
 									""
 								],
@@ -217,12 +327,13 @@
 							"raw": "{\n  \"email\": \"{{USER_EMAIL}}\",\n  \"password\": \"password\"\n}"
 						},
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"accounts"
 							]
 						}
@@ -230,7 +341,110 @@
 					"response": []
 				},
 				{
-					"name": "Step 2 - Get all races",
+					"name": "Step 2 - Get Access Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c5bec55e-f953-45f9-81d1-000d0b6dec5b",
+								"exec": [
+									"let tokenUrl = pm.environment.get(\"API_HOST\") + pm.environment.get(\"API_PORT\") + pm.environment.get(\"AUTH_TOKEN_PATH\");",
+									"let clientId = pm.environment.get(\"AUTH_CLIENT_ID\");",
+									"let clientSecret = pm.environment.get(\"AUTH_SECRET\");",
+									"let scope = pm.environment.get(\"AUTH_SCOPE\");",
+									"let grantType = 'password';",
+									"let userName = pm.environment.get(\"USER_EMAIL\");",
+									"let password = 'password';",
+									"",
+									"console.log('tokenUrl: ' + tokenUrl);",
+									"",
+									"let getTokenRequest = {",
+									"    method: 'POST',",
+									"    header: {",
+									"        'Accept': 'application/json',",
+									"        'Content-Type': 'application/x-www-form-urlencoded'",
+									"    },",
+									"    url: tokenUrl,",
+									"    body: {",
+									"        mode: 'urlencoded',",
+									"        urlencoded: [",
+									"            { key: 'grant_type', value: grantType, disabled: false },",
+									"            { key: 'username', value: userName, disabled: false },",
+									"            { key: 'password', value: password, disabled: false },",
+									"            { key: 'scope', value: scope, disabled: false },",
+									"            { key: 'client_id', value: clientId, disabled: false },",
+									"            { key: 'client_secret', value: clientSecret, disabled: false }",
+									"        ]",
+									"    }",
+									"};",
+									"",
+									"pm.sendRequest(getTokenRequest, (err, response) => {",
+									"    let jsonResponse = response.json(),",
+									"        newAccessToken = jsonResponse.access_token;",
+									"",
+									"    console.log({ err, jsonResponse, newAccessToken })",
+									"",
+									"    pm.environment.set('ACCESS_TOKEN', newAccessToken);",
+									"});",
+									"",
+									"console.log('ACCESS_TOKEN: ' + pm.environment.get('ACCESS_TOKEN'));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "28af1a00-e349-4919-b349-77689b30d079",
+								"exec": [
+									"pm.test(\"Should have status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should contain UUID\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.uuid.length).to.above(0);",
+									"});",
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"USER_UUID\", jsonData['uuid']);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts/{{USER_UUID}}",
+							"host": [
+								"{{API_HOST}}{{API_PORT}}"
+							],
+							"path": [
+								"norad",
+								"api",
+								"accounts",
+								"{{USER_UUID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Step 3 - Get all races",
 					"event": [
 						{
 							"listen": "test",
@@ -262,17 +476,14 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/dictionaries/races",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/dictionaries/races",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"dictionaries",
 								"races"
 							]
@@ -281,7 +492,7 @@
 					"response": []
 				},
 				{
-					"name": "Step 3 - Create new animal",
+					"name": "Step 4 - Create new animal",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -336,19 +547,25 @@
 								"name": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{ANIMAL_NAME}}\",\n  \"raceId\": {{RACE_ID}},\n  \"species\": \"CAT\",\n  \"userUUID\": \"{{EX8_USER_UUID}}\"\n}"
+							"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{ANIMAL_NAME}}\",\n  \"raceId\": \"{{RACE_ID}}\",\n  \"species\": \"CAT\"\n}"
 						},
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/animals",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"animals"
 							]
 						}
@@ -356,7 +573,7 @@
 					"response": []
 				},
 				{
-					"name": "Step 4 - Get animal details",
+					"name": "Step 5 - Get animal details",
 					"event": [
 						{
 							"listen": "test",
@@ -375,18 +592,21 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals/{{ANIMAL_UUID}}",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/animals/{{ANIMAL_UUID}}",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"animals",
 								"{{ANIMAL_UUID}}"
 							]
@@ -395,7 +615,7 @@
 					"response": []
 				},
 				{
-					"name": "Step 5 - Get user details",
+					"name": "Step 6 - Get user details",
 					"event": [
 						{
 							"listen": "test",
@@ -404,8 +624,8 @@
 								"exec": [
 									"pm.test(\"Check if users match\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    var envUserId = pm.environment.get(\"USER_ID\"); ",
-									"    pm.expect(jsonData.id).to.eql(envUserId);",
+									"    var envUserUuid = pm.environment.get(\"USER_UUID\"); ",
+									"    pm.expect(jsonData.uuid).to.eql(envUserUuid);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -414,18 +634,21 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts/{{USER_UUID}}",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts/{{USER_UUID}}",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"accounts",
 								"{{USER_UUID}}"
 							]
@@ -436,30 +659,37 @@
 			]
 		},
 		{
-			"name": "Exercise 7 - Upload file",
+			"name": "Exercise P_4 - Upload file",
 			"item": [
 				{
 					"name": "Upload file",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "file",
 									"type": "file",
-									"src": ""
+									"src": []
 								}
 							]
 						},
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals/{{ANIMAL_UUID}}/images/{{FIRST_IMAGE_UUID}}",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/animals/{{ANIMAL_UUID}}/images/{{FIRST_IMAGE_UUID}}",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"animals",
 								"{{ANIMAL_UUID}}",
 								"images",
@@ -487,22 +717,32 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{API_HOST}}{{API_PORT}}/norad/animals/{{ANIMAL_UUID}}/images/{{FIRST_IMAGE_UUID}}",
+							"raw": "{{API_HOST}}{{API_PORT}}/norad/api/animals/{{ANIMAL_UUID}}/images/{{FIRST_IMAGE_UUID}}",
 							"host": [
 								"{{API_HOST}}{{API_PORT}}"
 							],
 							"path": [
 								"norad",
+								"api",
 								"animals",
 								"{{ANIMAL_UUID}}",
 								"images",
 								"{{FIRST_IMAGE_UUID}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -511,7 +751,7 @@
 			]
 		},
 		{
-			"name": "Exercise 8 - Add many animals from CSV file",
+			"name": "Exercise P_5 - Add many animals from CSV file",
 			"item": [
 				{
 					"name": "Register new user",
@@ -539,8 +779,8 @@
 										"id": "7c9f97fd-9d41-464d-b70b-0f992d64459a",
 										"exec": [
 											"var jsonData = pm.response.json();",
-											"pm.environment.set(\"EX8_USER_UUID\", jsonData.uuid);",
-											"console.log(\"EX8_USER_UUID=\"+jsonData.uuid)"
+											"pm.environment.set(\"EX5_USER_UUID\", jsonData.uuid);",
+											"console.log(\"EX5_USER_UUID=\"+jsonData.uuid)"
 										],
 										"type": "text/javascript"
 									}
@@ -561,13 +801,117 @@
 									"raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"password\"\n}"
 								},
 								"url": {
-									"raw": "{{API_HOST}}{{API_PORT}}/norad/accounts",
+									"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts",
 									"host": [
 										"{{API_HOST}}{{API_PORT}}"
 									],
 									"path": [
 										"norad",
+										"api",
 										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Access Token",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c5bec55e-f953-45f9-81d1-000d0b6dec5b",
+										"exec": [
+											"let tokenUrl = pm.environment.get(\"API_HOST\") + pm.environment.get(\"API_PORT\") + pm.environment.get(\"AUTH_TOKEN_PATH\");",
+											"let clientId = pm.environment.get(\"AUTH_CLIENT_ID\");",
+											"let clientSecret = pm.environment.get(\"AUTH_SECRET\");",
+											"let scope = pm.environment.get(\"AUTH_SCOPE\");",
+											"let grantType = 'password';",
+											"let userName = pm.environment.get(\"USER_EMAIL\");",
+											"let password = 'password';",
+											"",
+											"console.log('tokenUrl: ' + tokenUrl);",
+											"",
+											"let getTokenRequest = {",
+											"    method: 'POST',",
+											"    header: {",
+											"        'Accept': 'application/json',",
+											"        'Content-Type': 'application/x-www-form-urlencoded'",
+											"    },",
+											"    url: tokenUrl,",
+											"    body: {",
+											"        mode: 'urlencoded',",
+											"        urlencoded: [",
+											"            { key: 'grant_type', value: grantType, disabled: false },",
+											"            { key: 'username', value: userName, disabled: false },",
+											"            { key: 'password', value: password, disabled: false },",
+											"            { key: 'scope', value: scope, disabled: false },",
+											"            { key: 'client_id', value: clientId, disabled: false },",
+											"            { key: 'client_secret', value: clientSecret, disabled: false }",
+											"        ]",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(getTokenRequest, (err, response) => {",
+											"    let jsonResponse = response.json(),",
+											"        newAccessToken = jsonResponse.access_token;",
+											"",
+											"    console.log({ err, jsonResponse, newAccessToken })",
+											"",
+											"    pm.environment.set('ACCESS_TOKEN', newAccessToken);",
+											"});",
+											"",
+											"console.log('ACCESS_TOKEN: ' + pm.environment.get('ACCESS_TOKEN'));",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "28af1a00-e349-4919-b349-77689b30d079",
+										"exec": [
+											"pm.test(\"Should have status 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Should contain UUID\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.uuid.length).to.above(0);",
+											"});",
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"USER_UUID\", jsonData['uuid']);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{API_HOST}}{{API_PORT}}/norad/api/accounts/{{EX5_USER_UUID}}",
+									"host": [
+										"{{API_HOST}}{{API_PORT}}"
+									],
+									"path": [
+										"norad",
+										"api",
+										"accounts",
+										"{{EX5_USER_UUID}}"
 									]
 								}
 							},
@@ -603,19 +947,25 @@
 										"name": "Content-Type",
 										"type": "text",
 										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{ACCESS_TOKEN}}",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{name}}\",\n  \"raceId\": {{raceId}},\n  \"species\": \"CAT\",\n  \"userUUID\": \"{{EX8_USER_UUID}}\"\n}"
+									"raw": "{\n  \"chipId\": 342323423,\n  \"images\": [\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image1.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image2.jpg\"\n    },\n    {\n      \"captureTimestamp\": 234827634827634,\n      \"latitude\": 12.323423423,\n      \"longitude\": 52.42342342,\n      \"mimeType\": \"image/jpg\",\n      \"originalFilename\": \"image3.jpg\"\n    }\n  ],\n  \"name\": \"{{name}}\",\n  \"raceId\": \"{{raceId}}\",\n  \"species\": \"CAT\"\n}"
 								},
 								"url": {
-									"raw": "{{API_HOST}}{{API_PORT}}/norad/animals",
+									"raw": "{{API_HOST}}{{API_PORT}}/norad/api/animals",
 									"host": [
 										"{{API_HOST}}{{API_PORT}}"
 									],
 									"path": [
 										"norad",
+										"api",
 										"animals"
 									]
 								}
