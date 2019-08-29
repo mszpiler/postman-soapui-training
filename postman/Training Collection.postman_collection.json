@@ -678,7 +678,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": []
+									"src": "example.jpg"
 								}
 							]
 						},

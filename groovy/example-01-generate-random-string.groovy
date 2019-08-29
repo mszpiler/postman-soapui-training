@@ -1,3 +1,5 @@
+// Example how to generate random string
+
 import org.apache.commons.lang3.RandomStringUtils
 
 String randomString = RandomStringUtils.random(10, "ABCDEFGH12345")

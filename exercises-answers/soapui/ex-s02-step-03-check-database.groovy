@@ -8,7 +8,7 @@ def props = new Properties()
 props.setProperty("user", "pkko")
 props.setProperty("password", "pkko")
 
-def conn = driver.connect("jdbc:postgresql://localhost:8200/pkko_db", props)
+def conn = driver.connect("jdbc:postgresql://norad-beta.duckdns.org:8200/pkko_db", props)
 def sql = new Sql(conn)
 
 def testCase = messageExchange.modelItem.testCase

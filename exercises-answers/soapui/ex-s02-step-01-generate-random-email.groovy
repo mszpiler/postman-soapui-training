@@ -1,4 +1,4 @@
-import org.apache.commons.lang.RandomStringUtils
+import org.apache.commons.lang3.RandomStringUtils
 
 String charset = (('A'..'Z') + ('0'..'9')).join()
 Integer length = 9
