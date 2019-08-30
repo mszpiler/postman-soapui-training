@@ -8,7 +8,7 @@ def driver = Class.forName('org.postgresql.Driver').newInstance() as Driver
 def props = new Properties()
 props.setProperty("user", "pkko")
 props.setProperty("password", "pkko")
-def conn = driver.connect("jdbc:postgresql://localhost:8200/pkko_db", props)
+def conn = driver.connect("jdbc:postgresql://51.38.129.181:8200/pkko_db", props)
 def sql = new Sql(conn)
 
 def testCase = messageExchange.modelItem.testCase
