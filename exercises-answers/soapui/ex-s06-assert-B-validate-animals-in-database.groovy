@@ -2,16 +2,18 @@ import groovy.sql.Sql
 
 import java.sql.Driver
 
+//reading csv file
 def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-jmeter-qa-training/data/cat-data.csv"
 def fileReader = new BufferedReader(new FileReader(csvFilePath))
 def rowsData = fileReader.readLines()
 int rowsize = rowsData.size()
 
+//database connection
 def driver = Class.forName('org.postgresql.Driver').newInstance() as Driver
 def props = new Properties()
 props.setProperty("user", "pkko")
 props.setProperty("password", "pkko")
-def conn = driver.connect("jdbc:postgresql://localhost:8200/pkko_db", props)
+def conn = driver.connect("jdbc:postgresql://51.38.129.181:8200/pkko_db", props)
 def sql = new Sql(conn)
 
 def userUUIDLocal = testRunner.testCase.testSuite.getPropertyValue("userUUID")
