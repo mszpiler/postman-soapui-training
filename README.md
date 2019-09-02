@@ -1,9 +1,9 @@
 # Postman and SoapUI trainign
 Training materials for Developers and Quality Engineers. <br/>
 Here you can find backend Rest API documentation https://norad-beta.duckdns.org/norad/swagger-ui.html with 8 endpoints.<br/> 
-Some of them are secured, OAuth 2.0 is on board.<br/>
+Some of them are secured, OAuth 2.0 is on board.
 
-###Training scope
+### Training scope
 
 During this training you will learn:
 
