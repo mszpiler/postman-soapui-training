@@ -4,7 +4,7 @@ Training materials for Developers and Quality Engineers. Here you can find backe
 
 <code>https://norad-beta.duckdns.org/norad/swagger-ui.html</code>
 
-application named <strong>Norad</strong>, with 8 endpoints for training purposes. Some of them are secured, OAuth 2.0 is on board.
+<strong>live application</strong> named <strong>Norad</strong>, with <strong>8 working endpoints</strong> for training purposes. Some of them are secured, OAuth 2.0 is on board.
 
 ### Training scope
 
