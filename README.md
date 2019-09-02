@@ -10,6 +10,7 @@ Training materials for Developers and Quality Engineers. Here you can find backe
 
 During this training you will learn:
 
+- How to automate Rest API backend tests
 - How to create simple and complicated requests GET, POST PUT.
 - How manage variables which are used in requests and in specific steps.
 - How to create test suite with many Rest API requests related to each other 
