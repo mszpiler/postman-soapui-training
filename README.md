@@ -14,7 +14,7 @@ During this training you will learn:
 - How manage variables which are used in requests and in specific steps.
 - How to create test suite with many Rest API requests related to each other 
 - How to use OAuth 2.0 authorisation and authentication in Rest API.
-- How to upload and download files via Rest API.
+- How to upload and download files in automated manner via Rest API.
 - How to work with database, search data using SQL in relational database.
  
 
