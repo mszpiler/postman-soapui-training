@@ -1,4 +1,4 @@
-def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-jmeter-qa-training/data/cat-data.csv"
+def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-training/data/cat-data.csv"
 def fileReader = new BufferedReader(new FileReader(csvFilePath))
 def rowsData = fileReader.readLines()
 int rowsize = rowsData.size()

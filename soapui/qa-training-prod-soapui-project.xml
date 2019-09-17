@@ -1223,7 +1223,7 @@ assert uploadsize == downloadsize</scriptText>
           <con:properties>
             <con:property>
               <con:name>email</con:name>
-              <con:value>mszpiler+TXQTQ04D6@norad.com</con:value>
+              <con:value>mszpiler+KSMN7TLZF@norad.com</con:value>
             </con:property>
           </con:properties>
           <con:returnProperties>
@@ -1315,7 +1315,7 @@ testRunner.testCase.setPropertyValue("ACCESS_TOKEN", accessToken)</script>
       <con:testStep type="groovy" name="Loop CSV file" id="1ce4cb6c-c3ce-49ad-b723-a828a3c354c7">
         <con:settings/>
         <con:config>
-          <script>def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-jmeter-qa-training/data/cat-data.csv"
+          <script>def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-training/data/cat-data.csv"
 def fileReader = new BufferedReader(new FileReader(csvFilePath))
 def rowsData = fileReader.readLines()
 int rowsize = rowsData.size()
@@ -1336,19 +1336,17 @@ for (int i = 1; i &lt; rowsize; i++) {
         <con:config>
           <script>import groovy.sql.Sql
 
-import java.sql.Driver
-
-def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-jmeter-qa-training/data/cat-data.csv"
+def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-training/data/cat-data.csv"
 def fileReader = new BufferedReader(new FileReader(csvFilePath))
 def rowsData = fileReader.readLines()
 int rowsize = rowsData.size()
 
-def driver = Class.forName('org.postgresql.Driver').newInstance() as Driver
-def props = new Properties()
-props.setProperty("user", "pkko")
-props.setProperty("password", "pkko")
-def conn = driver.connect("jdbc:postgresql://51.38.129.181:8200/pkko_db", props)
-def sql = new Sql(conn)
+def dbUrl      = "jdbc:postgresql://norad-beta.duckdns.org:8200/pkko_db"
+def dbUser     = "pkko"
+def dbPassword = "pkko"
+def dbDriver   = "org.postgresql.Driver"
+
+def sql = Sql.newInstance(dbUrl, dbUser, dbPassword, dbDriver)
 
 def userUUIDLocal = testRunner.testCase.testSuite.getPropertyValue("userUUID")
 
@@ -1386,14 +1384,13 @@ try {
 }
 finally {
     sql.close()
-    conn.close()
 }</script>
         </con:config>
       </con:testStep>
       <con:properties>
         <con:property>
           <con:name>ACCESS_TOKEN</con:name>
-          <con:value>eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrU1JOQXpVOThWR25ubU1ObF9qdzBoNUM0Z3JVa1JNRmxqVmE5dzZhLVNJIn0.eyJqdGkiOiJmYTNhNjNiOS1mZWJhLTQwMjgtYjU0Ni02ZGU3MWUwOGFiZTMiLCJleHAiOjE1NjczNzI1ODcsIm5iZiI6MCwiaWF0IjoxNTY3MzcyMjg3LCJpc3MiOiJodHRwczovL25vcmFkLWJldGEuZHVja2Rucy5vcmcvYXV0aC9yZWFsbXMvcG9rYWtvdGEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZDdmNTRiMDQtMzcxYi00YzE2LWEyYzAtNmVmMjE2ODNmYzNjIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibm9yYWQiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiJlNjQwZjI0YS1kMDExLTQzNGItYTViMS1iOTYxZjQwNWMyZTciLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJub3JhZCI6eyJyb2xlcyI6WyJwb2tha290YS11c2VyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJ1c2VyX25hbWUiOiJtc3pwaWxlcit0eHF0cTA0ZDZAbm9yYWQuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibXN6cGlsZXIrdHhxdHEwNGQ2QG5vcmFkLmNvbSIsImVtYWlsIjoibXN6cGlsZXIrdHhxdHEwNGQ2QG5vcmFkLmNvbSJ9.u3qeYdJKRwzkb1gG4uh3gk5eFW5_oAGxBhBvIB1cnPL3lt5bKO1Mu9EAK59zfMutDRZQ3D-qX6ibh4zEsM3jhQcF3vkoG6c3MtA_Ka_dbnGNFimF6m1WZ6goj39E4_UPsba2NnxYgT0xig6puSQuRCTKOpMe5g4dsGzESPbEVm8CDoB_oeXbChZ6rroshUU6jRCa13xrw0H4zTiLPwVUJ31pcfbyK8aHBfBRFshtldEwQYqx8nMrLEzxr0HlWSPH7amaSIIiGEuG0DnAV6kmIKbmLFb50h21kERX6nUFd6N-rOY-12H_X-JhyriYjIHbLT9_OIkfkaVG9R10nmkQbg</con:value>
+          <con:value>eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrU1JOQXpVOThWR25ubU1ObF9qdzBoNUM0Z3JVa1JNRmxqVmE5dzZhLVNJIn0.eyJqdGkiOiIzMmZmODdlOC1jMWFlLTQyM2YtOTQwOC00NWIwNzMzNTAxOWUiLCJleHAiOjE1Njg3NjEyOTYsIm5iZiI6MCwiaWF0IjoxNTY4NzYwOTk2LCJpc3MiOiJodHRwczovL25vcmFkLWJldGEuZHVja2Rucy5vcmcvYXV0aC9yZWFsbXMvcG9rYWtvdGEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNDhjNzkxMmYtYmVhNi00YTllLWE5MDktOTJjNWZlYjY5YjhlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibm9yYWQiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiI3NzRkMmY0ZS05OGQ1LTQ1MTEtOGQ0Yi00ZjRmZDgzZjAwN2IiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJub3JhZCI6eyJyb2xlcyI6WyJwb2tha290YS11c2VyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJ1c2VyX25hbWUiOiJtc3pwaWxlcitrc21uN3RsemZAbm9yYWQuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibXN6cGlsZXIra3Ntbjd0bHpmQG5vcmFkLmNvbSIsImVtYWlsIjoibXN6cGlsZXIra3Ntbjd0bHpmQG5vcmFkLmNvbSJ9.mtDsfiU95oA0U7Z_cn4vKXXUsK4wkPassHzPR5GwwFK3uYVtoWo0mwclY4SVW9vs2ZP0vOzJoAl-pGQj1xLzBrL2UJbI206phuMxqQydRNECu4ePGCQh5v0_-yrfLMh7MQn-iYmWQSi8U6VRRhmsvyOtPxDmdSyoAjWcPlmyHtaUJ-MSkCk0W6FBAb_zz29hd5O30JD-iQPj9GL9zankI5fOBtqCGMXn-lrOiF7obeNHJumYFuDrhIQjhIZe-Ul3-Ml3pqVrON5v3UvijDBEXt9kF0vSv3ptIRSQwOLI39vOeuAtUURw2iDtUIswQeM3xaQxua86T7nmiZise-syLA</con:value>
         </con:property>
         <con:property>
           <con:name>animalName</con:name>
@@ -1508,7 +1505,7 @@ testRunner.testCase.setPropertyValue("ACCESS_TOKEN", accessToken)</script>
         <con:config>
           <script>import groovy.json.JsonSlurper
 
-def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-jmeter-qa-training/data/many-steps-data.csv"
+def csvFilePath = "/home/mszpiler/enotion/repo/postman-soapui-training/data/many-steps-data.csv"
 def fileReader = new BufferedReader(new FileReader(csvFilePath))
 def rowsData = fileReader.readLines()
 int rowsize = rowsData.size()
@@ -1615,7 +1612,7 @@ for (entry in animalUUIDMap) {
     <con:properties>
       <con:property>
         <con:name>userUUID</con:name>
-        <con:value>e61dba17-d09f-4ff6-9d74-17a1c4651329</con:value>
+        <con:value>48c7912f-bea6-4a9e-a909-92c5feb69b8e</con:value>
       </con:property>
       <con:property>
         <con:name>animalUUID</con:name>
