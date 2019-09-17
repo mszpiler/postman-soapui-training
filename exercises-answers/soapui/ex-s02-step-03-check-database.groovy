@@ -1,15 +1,11 @@
 import groovy.sql.Sql
 
-import java.sql.Driver
+def dbUrl      = "jdbc:postgresql://norad-beta.duckdns.org:8200/pkko_db"
+def dbUser     = "pkko"
+def dbPassword = "pkko"
+def dbDriver   = "org.postgresql.Driver"
 
-def driver = Class.forName('org.postgresql.Driver').newInstance() as Driver
-
-def props = new Properties()
-props.setProperty("user", "pkko")
-props.setProperty("password", "pkko")
-
-def conn = driver.connect("jdbc:postgresql://norad-beta.duckdns.org:8200/pkko_db", props)
-def sql = new Sql(conn)
+def sql = Sql.newInstance(dbUrl, dbUser, dbPassword, dbDriver)
 
 def testCase = messageExchange.modelItem.testCase
 def email = testCase.getPropertyValue("email")
@@ -23,5 +19,4 @@ try {
 }
 finally {
     sql.close()
-    conn.close()
 }
