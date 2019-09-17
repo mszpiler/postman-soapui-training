@@ -4,17 +4,18 @@ Training materials for Developers and Quality Engineers. Here you can find backe
 
 <code>https://norad-beta.duckdns.org/norad/swagger-ui.html</code>
 
-application named <strong>Norad</strong>, with 8 endpoints. Some of them are secured, OAuth 2.0 is on board.
+<strong>live application</strong> named <strong>Norad</strong>, with <strong>8 working endpoints</strong> for training purposes. Some of them are secured, OAuth 2.0 is on board.
 
 ### Training scope
 
 During this training you will learn:
 
+- How to automate Rest API backend tests
 - How to create simple and complicated requests GET, POST PUT.
 - How manage variables which are used in requests and in specific steps.
 - How to create test suite with many Rest API requests related to each other 
 - How to use OAuth 2.0 authorisation and authentication in Rest API.
-- How to upload and download files via Rest API.
+- How to upload and download files in automated manner via Rest API.
 - How to work with database, search data using SQL in relational database.
  
 
